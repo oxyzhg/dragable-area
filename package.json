@@ -1,0 +1,9 @@
+{
+  "name": "dragable-area",
+  "version": "0.1.0",
+  "description": "dragable component for vue.",
+  "main": "src/index.js",
+  "scripts": {},
+  "author": "oxyzhg <oxyzhg@163.com>",
+  "license": "MIT"
+}
