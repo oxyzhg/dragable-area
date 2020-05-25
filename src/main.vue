@@ -1,6 +1,6 @@
 <template>
   <div
-    ref="dragableArea"
+    ref="floatWrap"
     class="dragable-wrap"
     :style="style"
     @touchmove.prevent
@@ -15,6 +15,8 @@
 </template>
 
 <script>
+const TRANSITION = TRANSITION;
+
 export default {
   name: 'DragableArea',
 
@@ -56,7 +58,6 @@ export default {
 
       // property
       clickable: false,
-      inMotion: false,
     };
   },
 
@@ -72,21 +73,41 @@ export default {
   },
 
   methods: {
-    // 初始化
-    initWrap() {
+    /**
+     * 初始化移动端 touch
+     */
+    initTouchEvents() {
       this.floatWrapRef.addEventListener('touchstart', this.touchStart);
       this.floatWrapRef.addEventListener('touchmove', this.touchMove);
       this.floatWrapRef.addEventListener('touchend', this.touchEnd);
     },
 
-    // 监听 resize
+    /**
+     * 监听浏览器 resize
+     */
     handleResize() {
       this.clientWidth = document.documentElement.clientWidth;
       this.clientHeight = document.documentElement.clientHeight;
       this.checkWrapPosition();
     },
 
-    // PC端拖动
+    // 初始化 Drag 事件
+    initDragEvents() {
+      this.floatWrapRef.addEventListener('dragstart', this.dragStart);
+      this.floatWrapRef.addEventListener('drag', this.drag);
+      this.floatWrapRef.addEventListener('dragend', this.dragEnd);
+    },
+    dragStart(e) {
+      console.log(e, 'drag start');
+    },
+    drag(e) {
+      console.log(e, 'dragging');
+    },
+    dragEnd(e) {
+      console.log(e, 'drag end');
+    },
+
+    // PC端事件
     mouseDown(e) {
       const event = e || window.event;
 
@@ -105,12 +126,11 @@ export default {
     },
     mouseUp() {
       document.onmousemove = null;
-      // check position
       this.checkWrapPosition();
-      this.floatWrapRef.style.transition = 'all 0.3s';
+      this.floatWrapRef.style.transition = TRANSITION;
     },
 
-    // 移动端拖动
+    // 移动端事件
     touchStart() {
       this.clickable = false;
       this.floatWrapRef.style.transition = 'none';
@@ -127,7 +147,7 @@ export default {
     },
     touchEnd() {
       if (!this.clickable) return;
-      this.floatWrapRef.style.transition = 'all 0.3s';
+      this.floatWrapRef.style.transition = TRANSITION;
       this.checkWrapPosition();
     },
 
@@ -155,7 +175,7 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      this.floatWrapRef = this.$refs.dragableArea;
+      this.floatWrapRef = this.$refs.floatWrap;
       // ElementRect
       this.floatWrapDOM = this.floatWrapRef.getBoundingClientRect();
 
@@ -163,7 +183,7 @@ export default {
       this.left = this.clientWidth - this.floatWrapDOM.width - this.distanceRight;
       this.top = this.clientHeight - this.floatWrapDOM.height - this.distanceBottom;
 
-      this.initWrap();
+      this.initTouchEvents();
     });
     window.addEventListener('resize', this.handleResize);
   },
