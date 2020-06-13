@@ -1,7 +1,7 @@
-import DragableArea from './main';
+import DraggableArea from './main';
 
-DragableArea.install = function (Vue) {
-  Vue.component(DragableArea.name, DragableArea);
+DraggableArea.install = function (Vue) {
+  Vue.component(DraggableArea.name, DraggableArea);
 };
 
-export default DragableArea;
+export default DraggableArea;

@@ -1,7 +1,7 @@
 <template>
   <div
     ref="floatWrap"
-    class="dragable-wrap"
+    class="draggable-wrap"
     :style="style"
     @touchmove.prevent
     @mousemove.prevent
@@ -9,16 +9,16 @@
     @mouseup="mouseUp"
   >
     <slot>
-      <div class="block">A</div>
+      <div class="block">BOX</div>
     </slot>
   </div>
 </template>
 
 <script>
-const TRANSITION = TRANSITION;
+const TRANSITION = 'TRANSITION';
 
 export default {
-  name: 'DragableArea',
+  name: 'DraggableArea',
 
   props: {
     distanceRight: {
@@ -177,7 +177,8 @@ export default {
     this.$nextTick(() => {
       this.floatWrapRef = this.$refs.floatWrap;
       // ElementRect
-      this.floatWrapDOM = this.floatWrapRef.getBoundingClientRect();
+      // FIXME: 可能会在挂载页面的时候找不到 ref 属性，而导致报错，暂时使用可选链处理
+      this.floatWrapDOM = this.floatWrapRef?.getBoundingClientRect();
 
       // default position
       this.left = this.clientWidth - this.floatWrapDOM.width - this.distanceRight;
@@ -195,7 +196,7 @@ export default {
 </script>
 
 <style scoped>
-.dragable-wrap {
+.draggable-wrap {
   position: fixed;
 }
 
