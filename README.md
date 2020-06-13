@@ -1,6 +1,6 @@
-# DragableArea
+# DraggableArea
 
-> A dragable component for vue.
+> A draggable component for vue.
 
 ## 配置
 
